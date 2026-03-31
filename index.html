@@ -7,78 +7,65 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: #0f1117; color: #e5e5e5;
       min-height: 100vh; display: flex;
       align-items: center; justify-content: center; padding: 1rem;
     }
     .wrapper { width: 100%; max-width: 650px; }
     header { text-align: center; margin-bottom: 2rem; }
-    header h1 { font-size: 1.8rem; font-weight: 800; color: #ff4655; letter-spacing: 2px; text-transform: uppercase; }
-    header p { font-size: 0.9rem; color: #888; margin-top: 6px; }
-
-    /* 탭 메뉴 */
+    header h1 { font-size: 1.8rem; color: #ff4655; letter-spacing: 2px; }
+    
     .tabs { display: flex; gap: 8px; margin-bottom: 1rem; }
     .tab {
       flex: 1; padding: 12px; border: 1px solid #2a2d35; border-radius: 8px;
-      background: #1a1d26; color: #888; font-size: 14px; cursor: pointer; transition: all 0.2s;
+      background: #1a1d26; color: #888; cursor: pointer; transition: 0.2s;
     }
-    .tab.active { background: #ff4655; color: white; border-color: #ff4655; font-weight: 700; }
+    .tab.active { background: #ff4655; color: white; border-color: #ff4655; font-weight: bold; }
 
     .card { background: #1a1d26; border: 1px solid #2a2d35; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
-    label { font-size: 12px; color: #ff4655; font-weight: 600; display: block; margin-bottom: 8px; text-transform: uppercase; }
+    label { font-size: 12px; color: #ff4655; font-weight: 600; display: block; margin-bottom: 8px; }
     
     textarea {
       width: 100%; background: #0f1117; border: 1px solid #2a2d35;
       border-radius: 8px; color: #e5e5e5; font-size: 16px;
-      padding: 12px; resize: vertical; min-height: 100px;
-      font-family: inherit; outline: none; transition: border-color 0.2s;
+      padding: 12px; resize: vertical; min-height: 100px; outline: none;
     }
     textarea:focus { border-color: #ff4655; }
 
-    /* 용어 조합 섹션 */
     .phrase-section { margin-top: 15px; border-top: 1px solid #2a2d35; padding-top: 15px; }
-    .category-group { margin-bottom: 12px; }
     .category-title { font-size: 11px; color: #666; margin-bottom: 6px; display: block; }
     .quick-phrases { display: flex; flex-wrap: wrap; gap: 6px; }
     
     .phrase {
       font-size: 12px; padding: 5px 10px; border: 1px solid #333;
-      border-radius: 4px; background: #222; color: #ccc; cursor: pointer; transition: all 0.1s;
+      border-radius: 4px; background: #222; color: #ccc; cursor: pointer;
     }
-    .phrase:hover { border-color: #ff4655; color: #ff4655; background: #2a1a1c; }
-    .phrase.action { border-color: #46a4ff; color: #46a4ff; }
+    .phrase:hover { border-color: #ff4655; color: #ff4655; }
 
     .btn-translate {
       width: 100%; padding: 14px; background: #ff4655; color: white;
-      border: none; border-radius: 8px; font-size: 16px; font-weight: 700;
-      cursor: pointer; margin-top: 15px; transition: background 0.2s;
+      border: none; border-radius: 8px; font-size: 16px; font-weight: bold;
+      cursor: pointer; margin-top: 15px;
     }
-    .btn-translate:hover { background: #e03040; }
 
-    /* 결과 영역 */
-    .result-area { position: relative; margin-top: 10px; }
     .result-box {
       background: #0f1117; border: 1px solid #2a2d35; border-radius: 8px;
-      padding: 15px; min-height: 60px; font-size: 16px; line-height: 1.5;
-      color: #e5e5e5; white-space: pre-wrap;
+      padding: 15px; min-height: 60px; font-size: 16px; position: relative;
     }
-    .result-box.placeholder { color: #444; }
-    
     .copy-btn {
-      position: absolute; top: 10px; right: 10px; padding: 4px 12px; font-size: 11px;
-      border: 1px solid #2a2d35; border-radius: 4px; background: #1a1d26;
-      color: #aaa; cursor: pointer;
+      position: absolute; top: 10px; right: 10px; padding: 4px 10px; font-size: 11px;
+      background: #1a1d26; border: 1px solid #333; color: #aaa; cursor: pointer;
     }
-    .copy-btn:hover { background: #ff4655; color: white; border-color: #ff4655; }
 
-    .hiragana-box {
-      margin-top: 10px; background: #0f1117; border-left: 3px solid #ff4655;
-      padding: 10px 15px; font-size: 14px; color: #aaa; font-style: italic;
+    .ocr-btn {
+      width: 100%; padding: 10px; border: 1px dashed #444; background: transparent;
+      color: #888; cursor: pointer; border-radius: 8px; margin-top: 10px;
     }
+    .ocr-btn:hover { border-color: #ff4655; color: #ff4655; }
     
-    .error { color: #ff4655; font-size: 13px; margin-top: 10px; font-weight: 600; }
-    .hint { font-size: 11px; color: #555; text-align: right; margin-top: 8px; }
+    .hiragana-box { margin-top: 10px; background: #0f1117; padding: 10px; color: #aaa; font-style: italic; border-left: 3px solid #ff4655; }
+    .error { color: #ff4655; font-size: 13px; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -86,96 +73,68 @@
 <div class="wrapper">
   <header>
     <h1>VALORANT JP TRANSLATOR</h1>
-    <p>히라가나로 듣고, 한국어로 조합해서 말하기</p>
   </header>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('jp-to-kr', this)">🇯🇵 JP → KR (듣기)</button>
+    <button class="tab active" onclick="switchTab('jp-to-kr', this)">🇯🇵 JP → KR (듣기/사진)</button>
     <button class="tab" onclick="switchTab('kr-to-jp', this)">🇰🇷 KR → JP (말하기)</button>
   </div>
 
   <div id="tab-jp-to-kr">
     <div class="card">
-      <label>일본어 소리 입력 (히라가나)</label>
-      <textarea id="jp-input" placeholder="귀로 들리는 소리를 히라가나로 입력하세요... (예: おつかれ)"></textarea>
-      <div class="quick-phrases" style="margin-top:10px;">
-        <span class="category-title" style="display:block; width:100%;">자주 들리는 단어:</span>
-        <button class="phrase" onclick="appendWord('jp', 'おつかれ')">오츠카레(수고)</button>
-        <button class="phrase" onclick="appendWord('jp', 'どんまい')">돈마이(괜찮아)</button>
-        <button class="phrase" onclick="appendWord('jp', 'ないす')">나이스</button>
-        <button class="phrase" onclick="appendWord('jp', 'ごめん')">고멘(미안)</button>
-        <button class="phrase" onclick="appendWord('jp', 'たすけて')">타스케테(도와줘)</button>
-        <button class="phrase" onclick="appendWord('jp', 'えぐい')">에구이(지린다)</button>
-      </div>
-      <button class="btn-translate" onclick="runTranslate('jp-to-kr')">무슨 뜻이야?</button>
+      <label>일본어 입력 (영어 발음, 히라가나 모두 가능)</label>
+      <textarea id="jp-input" placeholder="예: gomennasai 또는 だれにいってんの？"></textarea>
+      
+      <input type="file" id="image-input" accept="image/*" style="display:none" onchange="uploadImage()">
+      <button class="ocr-btn" onclick="document.getElementById('image-input').click()">📷 사진 찍거나 스크린샷 올리기</button>
+      <div id="ocr-status" style="font-size:11px; text-align:center; margin-top:5px; color:#ff4655;"></div>
+
+      <button class="btn-translate" onclick="runTranslate('jp-to-kr')">번역하기</button>
     </div>
     <div class="card">
-      <label>해석 결과</label>
-      <div class="result-area">
-        <div class="result-box placeholder" id="kr-result">번역 결과가 여기에 표시됩니다.</div>
-        <button class="copy-btn" onclick="copyText('kr-result')">복사</button>
-      </div>
-      <div class="error" id="jp-error" style="display:none"></div>
+      <label>번역 결과</label>
+      <div class="result-box" id="kr-result">해석이 여기에 표시됩니다.</div>
     </div>
   </div>
 
   <div id="tab-kr-to-jp" style="display:none">
     <div class="card">
       <label>한국어 조합 & 입력</label>
-      <textarea id="kr-input" placeholder="단어를 클릭하거나 직접 입력하세요..."></textarea>
+      <textarea id="kr-input" placeholder="단어를 클릭하여 조합하세요..."></textarea>
       
       <div class="phrase-section">
         <div class="category-group">
-          <span class="category-title">📍 위치/사이트</span>
+          <span class="category-title">📍 위치</span>
           <div class="quick-phrases">
-            <button class="phrase" onclick="appendWord('kr', 'A사이트')">A사이트</button>
-            <button class="phrase" onclick="appendWord('kr', 'B사이트')">B사이트</button>
-            <button class="phrase" onclick="appendWord('kr', 'C사이트')">C사이트</button>
-            <button class="phrase" onclick="appendWord('kr', '미드')">미드</button>
-            <button class="phrase" onclick="appendWord('kr', '헤븐')">헤븐</button>
+            <button class="phrase" onclick="addWord('kr', 'A사이트')">A사이트</button>
+            <button class="phrase" onclick="addWord('kr', 'B사이트')">B사이트</button>
+            <button class="phrase" onclick="addWord('kr', '미드')">미드</button>
           </div>
         </div>
-
-        <div class="category-group">
-          <span class="category-title">⚔️ 전략/행동</span>
+        <div class="category-group" style="margin-top:10px;">
+          <span class="category-title">⚔️ 전략</span>
           <div class="quick-phrases">
-            <button class="phrase action" onclick="appendWord('kr', '가자')">가자</button>
-            <button class="phrase action" onclick="appendWord('kr', '러쉬하자')">러쉬</button>
-            <button class="phrase action" onclick="appendWord('kr', '천천히 가자')">슬로우</button>
-            <button class="phrase action" onclick="appendWord('kr', '돌리자')">로테이트</button>
-            <button class="phrase action" onclick="appendWord('kr', '지키자')">세이브</button>
-          </div>
-        </div>
-
-        <div class="category-group">
-          <span class="category-title">📞 브리핑/매너</span>
-          <div class="quick-phrases">
-            <button class="phrase" onclick="appendWord('kr', '적 많아')">적많음</button>
-            <button class="phrase" onclick="appendWord('kr', '딸피야')">개피</button>
-            <button class="phrase" onclick="appendWord('kr', '나이스!')">나이스</button>
-            <button class="phrase" onclick="appendWord('kr', '미안해요')">미안</button>
+            <button class="phrase" onclick="addWord('kr', '가자')">가자</button>
+            <button class="phrase" onclick="addWord('kr', '지키자')">세이브</button>
+            <button class="phrase" onclick="addWord('kr', '천천히')">천천히</button>
+            <button class="phrase" onclick="addWord('kr', '나이스!')">나이스</button>
           </div>
         </div>
       </div>
 
       <button class="btn-translate" onclick="runTranslate('kr-to-jp')">일본어로 번역</button>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-        <button class="phrase" onclick="clearInput('kr')" style="color:#ff4655;">비우기</button>
-        <p class="hint">Ctrl + Enter로 전송</p>
-      </div>
+      <button class="phrase" onclick="document.getElementById('kr-input').value=''" style="margin-top:10px; width:100%;">비우기</button>
     </div>
-
     <div class="card">
-      <label>일본어 번역 결과 (채팅창에 복사)</label>
-      <div class="result-area">
-        <div class="result-box placeholder" id="jp-result">번역 결과가 여기에 표시됩니다.</div>
+      <label>일본어 번역 결과</label>
+      <div class="result-box">
+        <span id="jp-result">결과가 여기에 표시됩니다.</span>
         <button class="copy-btn" onclick="copyText('jp-result')">복사</button>
       </div>
       <div id="hira-section" style="display:none">
-        <label style="margin-top:15px; color:#666;">히라가나 읽기</label>
+        <label style="margin-top:10px;">히라가나 발음</label>
         <div class="hiragana-box" id="hira-result"></div>
       </div>
-      <div class="error" id="kr-error" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -188,40 +147,24 @@
     document.getElementById('tab-kr-to-jp').style.display = mode === 'kr-to-jp' ? '' : 'none';
   }
 
-  function appendWord(lang, word) {
+  function addWord(lang, word) {
     const input = document.getElementById(lang + '-input');
-    if (input.value.length > 0 && !input.value.endsWith(' ')) {
-      input.value += ' ' + word;
-    } else {
-      input.value += word;
-    }
+    input.value += (input.value ? ' ' : '') + word;
     input.focus();
   }
 
-  function clearInput(lang) {
-    document.getElementById(lang + '-input').value = '';
-  }
-
   function copyText(id) {
-    const el = document.getElementById(id);
-    if (el.classList.contains('placeholder')) return;
-    navigator.clipboard.writeText(el.textContent).then(() => {
-      const btn = el.parentElement.querySelector('.copy-btn');
-      btn.textContent = '복사 완료!';
-      setTimeout(() => btn.textContent = '복사', 1500);
-    });
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text);
+    alert('복사되었습니다!');
   }
 
   async function runTranslate(direction) {
-    const isJpToKr = direction === 'jp-to-kr';
-    const text = document.getElementById(isJpToKr ? 'jp-input' : 'kr-input').value.trim();
-    const resultEl = document.getElementById(isJpToKr ? 'kr-result' : 'jp-result');
-    const errorEl = document.getElementById(isJpToKr ? 'jp-error' : 'kr-error');
+    const isJp = direction === 'jp-to-kr';
+    const text = document.getElementById(isJp ? 'jp-input' : 'kr-input').value.strip;
+    const resultEl = document.getElementById(isJp ? 'kr-result' : 'jp-result');
     
-    if (!text) return;
-    errorEl.style.display = 'none';
     resultEl.textContent = '번역 중...';
-
     try {
       const res = await fetch('/translate', {
         method: 'POST',
@@ -229,27 +172,37 @@
         body: JSON.stringify({ text, direction })
       });
       const data = await res.json();
-      if (data.error) {
-        errorEl.textContent = data.error; errorEl.style.display = '';
-      } else {
+      if (data.error) { resultEl.textContent = data.error; }
+      else {
         resultEl.textContent = data.result;
-        resultEl.classList.remove('placeholder');
-        if (!isJpToKr && data.hiragana) {
+        if (!isJp && data.hiragana) {
           document.getElementById('hira-result').textContent = data.hiragana;
           document.getElementById('hira-section').style.display = '';
         }
       }
-    } catch (e) {
-      errorEl.textContent = '서버 연결 오류'; errorEl.style.display = '';
-    }
+    } catch (e) { resultEl.textContent = '서버 오류'; }
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.key === 'Enter') {
-      const activeTab = document.querySelector('.tab.active').textContent;
-      runTranslate(activeTab.includes('JP → KR') ? 'jp-to-kr' : 'kr-to-jp');
-    }
-  });
+  async function uploadImage() {
+    const file = document.getElementById('image-input').files[0];
+    const status = document.getElementById('ocr-status');
+    const resultEl = document.getElementById('kr-result');
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+    status.textContent = '이미지 분석 중...';
+
+    try {
+      const res = await fetch('/translate-image', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.error) { status.textContent = data.error; }
+      else {
+        status.textContent = '인식 성공: ' + data.original;
+        resultEl.textContent = data.translated;
+      }
+    } catch (e) { status.textContent = '연결 오류'; }
+  }
 </script>
 </body>
 </html>
