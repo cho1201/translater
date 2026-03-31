@@ -1,4 +1,6 @@
 flask
 deep-translator
 pykakasi
+easyocr
+opencv-python-headless
 gunicorn
